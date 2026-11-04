@@ -1,0 +1,13 @@
+# Only the site files and data.json are ever committed. Everything else stays local.
+*
+!.gitignore
+!.nojekyll
+!index.html
+!README.md
+!data.json
+!sample-data.json
+!css/
+!css/app.css
+!js/
+!js/**/
+!js/**/*.js
