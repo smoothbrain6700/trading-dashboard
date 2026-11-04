@@ -1,4 +1,3 @@
-// Pure: raw data.json payload -> view model with safe defaults. No DOM, no network.
 import { CONFIG } from '../config.js';
 
 const obj = (v) => (v && typeof v === 'object' && !Array.isArray(v) ? v : {});
@@ -55,7 +54,6 @@ function backtest(b) {
       total_return: num(obj(x).total_return), max_drawdown: num(obj(x).max_drawdown) })) };
 }
 
-/** Returns {ok: true, data} or {ok: false, error} for payloads the site can't use. */
 export function normalize(raw) {
   if (!raw || typeof raw !== 'object' || Array.isArray(raw)) return { ok: false, error: 'Data format not recognized. Update the site.' };
   if (raw.schema_version !== CONFIG.schemaVersion) {
@@ -82,7 +80,6 @@ export function normalize(raw) {
   };
 }
 
-/** Pure stale check. Returns null | {level: 'warn'|'err', since: ms, expected: ms}. Uses ptInstant/ptParts injected. */
 export function staleness(generatedMs, nowMs, tz) {
   if (generatedMs === null) return null;
   if (nowMs - generatedMs > CONFIG.staleRedDays * 86400000) return { level: 'err', since: generatedMs };

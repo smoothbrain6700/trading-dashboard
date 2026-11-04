@@ -1,32 +1,20 @@
-// Boot: show cached copy, load fresh data, route, render the current screen.
 import { CONFIG } from './config.js';
 import { load, cached } from './data/load.js';
-import { staleness } from './data/normalize.js';
 import { start, current } from './router.js';
 import { el, clear } from './ui/el.js';
-import { banner } from './ui/banner.js';
+import { banner, staleBanner } from './ui/banner.js';
 import * as f from './format.js';
 import * as overview from './screens/overview.js';
 import * as positions from './screens/positions.js';
 import * as trades from './screens/trades.js';
 import * as thinking from './screens/thinking.js';
 import * as strategies from './screens/strategies.js';
+import * as trends from './screens/trends.js';
 
-const SCREENS = { overview, positions, trades, thinking, strategies };
-const TZ = { parts: f.ptParts, instant: f.ptInstant };
+const SCREENS = { overview, positions, trades, thinking, strategies, trends };
 const $ = (id) => document.getElementById(id);
 const view = { data: null, source: null, problem: null, loading: false };
 
-function staleBanner(d) {
-  const s = staleness(f.parseTime(d.generated_at), Date.now(), TZ);
-  if (!s) return { stale: null, node: null };
-  const from = f.time(d.generated_at);
-  if (s.level === 'err') return { stale: s, node: banner(`Data is from ${from}, more than ${CONFIG.staleRedDays} days old.`, 'err') };
-  const tail = s.today ? "Today's run hasn't landed yet." : "The latest run hasn't landed yet.";
-  return { stale: s, node: banner(`Data is from ${from}. ${tail}`, 'warn') };
-}
-
-/** Dot = the worst of the run status and the banners currently shown (banner: 'err' | 'warn' | null). */
 function header(d, stale, bannerLevel = null) {
   const dot = $('hdr-dot');
   const run = $('hdr-run');
@@ -75,7 +63,7 @@ function render() {
     banners.append(view.problem.kind === 'format' ? banner(view.problem.message, 'err')
       : banner(`Couldn't load fresh data, showing cached from ${f.time(d.generated_at)}.`, 'err'));
   }
-  const { stale, node } = staleBanner(d);
+  const { stale, node } = staleBanner(d.generated_at);
   if (node) banners.append(node);
   if (stale && bannerLevel !== 'err') bannerLevel = stale.level;
   header(d, stale, bannerLevel);

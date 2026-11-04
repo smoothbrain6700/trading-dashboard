@@ -2,7 +2,6 @@ import { el } from '../../ui/el.js';
 import { badge } from '../../ui/badge.js';
 import * as f from '../../format.js';
 
-/** Fallback for position kinds this site version doesn't know. */
 export function renderGeneric(p) {
   return el('div', { class: 'card' },
     el('div', { class: 'row' },

@@ -1,31 +1,26 @@
-// The only module that touches the network or storage. Never throws to callers.
 import { CONFIG } from '../config.js';
 import { normalize } from './normalize.js';
 
-function readCache() {
+function readCache(key, norm) {
   try {
-    const raw = localStorage.getItem(CONFIG.cacheKey);
+    const raw = localStorage.getItem(key);
     if (!raw) return null;
-    const n = normalize(JSON.parse(raw));
+    const n = norm(JSON.parse(raw));
     return n.ok ? n.data : null;
   } catch { return null; }
 }
-function writeCache(text) {
-  try { localStorage.setItem(CONFIG.cacheKey, text); } catch { /* storage full or disabled */ }
+function writeCache(text, key) {
+  try { localStorage.setItem(key, text); } catch { /* storage full or disabled */ }
 }
 export const isSample = () => new URLSearchParams(location.search).get('sample') === '1';
 
-/** Last good copy (null in sample mode, which never reads or writes the cache). */
 export function cached() {
-  return isSample() ? null : readCache();
+  return isSample() ? null : readCache(CONFIG.cacheKey, normalize);
 }
 
-/**
- * Resolves to {data, source: 'fresh'|'cached'|null, problem: null|{kind: 'missing'|'format', message}}.
- */
-export async function load() {
+export async function load({ url: liveUrl = CONFIG.dataUrl, sampleUrl = CONFIG.sampleUrl, key = CONFIG.cacheKey, norm = normalize, what = 'Data' } = {}) {
   const sample = isSample();
-  const url = (sample ? CONFIG.sampleUrl : CONFIG.dataUrl) + '?t=' + Date.now();
+  const url = (sample ? sampleUrl : liveUrl) + '?t=' + Date.now();
   const ctl = new AbortController();
   const timer = setTimeout(() => ctl.abort(), CONFIG.fetchTimeoutMs);
   let problem;
@@ -37,9 +32,9 @@ export async function load() {
       const text = await res.text();
       let raw;
       try { raw = JSON.parse(text); } catch { raw = undefined; }
-      const n = raw === undefined ? { ok: false, error: 'Data format not recognized (invalid JSON). Update the site.' } : normalize(raw);
+      const n = raw === undefined ? { ok: false, error: `${what} format not recognized (invalid JSON). Update the site.` } : norm(raw);
       if (n.ok) {
-        if (!sample) writeCache(text);
+        if (!sample) writeCache(text, key);
         return { data: n.data, source: 'fresh', problem: null };
       }
       problem = { kind: 'format', message: n.error };
@@ -49,6 +44,6 @@ export async function load() {
   } finally {
     clearTimeout(timer);
   }
-  const c = sample ? null : readCache();
+  const c = sample ? null : readCache(key, norm);
   return { data: c, source: c ? 'cached' : null, problem };
 }

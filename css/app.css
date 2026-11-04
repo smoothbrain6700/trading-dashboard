@@ -60,3 +60,6 @@ details summary{cursor:pointer;min-height:44px;display:flex;align-items:center;c
  td::before{content:attr(data-label);color:var(--muted);text-align:left;padding-right:12px}
  td:first-child{font-weight:600}td:first-child::before{content:none}
 }
+.chart{display:block;width:100%;height:auto;margin-top:8px;touch-action:pan-y}.chart text{fill:var(--muted);font-size:11px}.chart .readout{fill:var(--text);font-size:12px}
+.chart .grid{stroke:var(--line)}.chart .zero,.chart .guide{stroke:var(--muted)}.chart .ln{fill:none;stroke:currentColor;stroke-width:1.5}.chart .faint{opacity:.35;stroke-width:1}.chart .dash{stroke:var(--muted);stroke-dasharray:4 4}.chart circle{fill:currentColor}
+.brow{padding:6px 0}.blabel{overflow-wrap:anywhere}.btrack{height:8px;background:var(--line);border-radius:4px;overflow:hidden;margin-top:4px}.btrack i{display:block;height:100%;background:var(--green)}.btrack i.neg{background:var(--red)}

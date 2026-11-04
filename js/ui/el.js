@@ -1,4 +1,3 @@
-// DOM helper. Text is only ever set with textContent / text nodes, never innerHTML.
 const SVG_NS = 'http://www.w3.org/2000/svg';
 
 function apply(node, attrs) {

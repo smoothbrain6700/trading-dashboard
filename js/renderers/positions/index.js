@@ -1,4 +1,3 @@
-// Position renderers, registered by `kind`. A new instrument = one renderer file + one line here.
 import { renderEquity } from './equity.js';
 import { renderSpread } from './spread.js';
 import { renderGeneric } from './generic.js';

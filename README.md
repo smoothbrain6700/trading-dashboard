@@ -9,3 +9,4 @@ Served by GitHub Pages from `main` at the repo root, under `/trading-dashboard/`
 - New position kind: add `js/renderers/positions/<kind>.js` and one line in `js/renderers/positions/index.js`. Unknown kinds use `generic.js`.
 
 Run locally: `python3 -m http.server 8000` in this folder, then open http://localhost:8000/ (or `/?sample=1`).
+- `history.json` (Trends tab, `#trends`) is written by the same export from `logs/snapshots.jsonl` + `trades.csv`, and is fetched only when you open Trends. `sample-history.json` is synthetic (`?sample=1`).

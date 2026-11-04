@@ -1,5 +1,4 @@
 import { svg } from './el.js';
-/** Inline SVG line of numeric values; a single value draws a dot. */
 export function sparkline(values, { width = 300, height = 36, label = 'trend' } = {}) {
   const v = values.filter((x) => typeof x === 'number' && Number.isFinite(x));
   const root = svg('svg', { class: 'spark', viewBox: `0 0 ${width} ${height}`, preserveAspectRatio: 'none', role: 'img', 'aria-label': label });

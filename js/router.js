@@ -1,5 +1,4 @@
-// Hash router: #overview #positions #trades #thinking #strategies
-export const ROUTES = ['overview', 'positions', 'trades', 'thinking', 'strategies'];
+export const ROUTES = ['overview', 'positions', 'trades', 'thinking', 'strategies', 'trends'];
 
 export function current() {
   const h = (location.hash || '').replace(/^#/, '');

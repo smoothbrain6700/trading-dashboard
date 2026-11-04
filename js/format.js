@@ -1,4 +1,3 @@
-// Pure formatting helpers (no DOM).
 import { CONFIG } from './config.js';
 
 const DASH = '—';
@@ -36,14 +35,10 @@ export function fixed(v, dp = 2) {
   const s = v.toFixed(dp);
   return Number(s) === 0 ? s.replace(/^-/, '') : neg(s);
 }
-/** Indicator/condition values: 2 decimals, but 4 significant figures below 1 so sub-$1 prices
- *  (DOGE 0.07123 vs band 0.07088) stay distinguishable. */
 export function num(v, dp = 2, sig = CONFIG.smallSigFigs || 4) {
   if (!isNum(v)) return DASH;
   if (v === 0 || Math.abs(v) >= 1) return fixed(v, dp);
-  // fixed notation with `sig` significant figures, trailing zeros kept (0.07500, 0.5000); never 1e-7
   let dec = Math.min(Math.max(sig - 1 - Math.floor(Math.log10(Math.abs(v))), 0), 20);
-  // pick decimals after rounding: 0.99996 -> 1.00, 0.0999996 -> 0.1000
   const r = Number(Math.abs(v).toFixed(dec));
   if (r >= 1) return fixed(v, dp);
   if (r > 0) dec = Math.min(Math.max(sig - 1 - Math.floor(Math.log10(r)), 0), 20);
@@ -62,7 +57,6 @@ function parts(ms) {
   return { y: +o.year, m: +o.month, d: +o.day, h: +o.hour % 24, min: +o.minute, s: +o.second, wd: o.weekday };
 }
 export const ptParts = parts;
-/** Instant (ms) of a wall-clock time in the configured zone. */
 export function ptInstant(y, m, d, h = 0, min = 0) {
   const guess = Date.UTC(y, m - 1, d, h, min);
   const p = parts(guess);
