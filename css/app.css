@@ -55,10 +55,10 @@ details summary{cursor:pointer;min-height:44px;display:flex;align-items:center;c
 .tabs a[aria-current=page]{color:var(--blue)}
 .tabs svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:2;stroke-linejoin:round}
 @media (max-width:479px){
- table,thead,tbody,tr,td{display:block}thead{display:none}
- tr{border-bottom:1px solid var(--line);padding:6px 0}td{border:0;padding:2px 0;display:flex;justify-content:space-between;white-space:normal;text-align:right}
- td::before{content:attr(data-label);color:var(--muted);text-align:left;padding-right:12px}
- td:first-child{font-weight:600}td:first-child::before{content:none}
+table,thead,tbody,tr,td{display:block}thead{display:none}
+tr{border-bottom:1px solid var(--line);padding:6px 0}td{border:0;padding:2px 0;display:flex;justify-content:space-between;white-space:normal;text-align:right}
+td::before{content:attr(data-label);color:var(--muted);text-align:left;padding-right:12px}
+td:first-child{font-weight:600}td:first-child::before{content:none}
 }
 .chart{display:block;width:100%;height:auto;margin-top:8px;touch-action:pan-y}.chart text{fill:var(--muted);font-size:11px}.chart .readout{fill:var(--text);font-size:12px}
 .chart .grid{stroke:var(--line)}.chart .zero,.chart .guide{stroke:var(--muted)}.chart .ln{fill:none;stroke:currentColor;stroke-width:1.5}.chart .faint{opacity:.35;stroke-width:1}.chart .dash{stroke:var(--muted);stroke-dasharray:4 4}.chart circle{fill:currentColor}
